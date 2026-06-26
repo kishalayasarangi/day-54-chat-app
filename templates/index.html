@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chat App</title>
+  <link rel="stylesheet" href="/static/style.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.min.js"></script>
+</head>
+<body>
+
+  <!-- LOGIN SCREEN -->
+  <div class="login-screen" id="loginScreen">
+    <div class="login-card">
+      <div class="login-logo">💬</div>
+      <h1>Chat App</h1>
+      <p>Real Time · Flask + SocketIO · Day 54 of 120</p>
+      <div class="login-form">
+        <input type="text" id="usernameInput"
+               placeholder="Your name..."
+               maxlength="20"
+               onkeydown="if(event.key==='Enter') joinChat()"/>
+        <div class="room-select">
+          <label>Choose Room</label>
+          <div class="room-btns">
+            <button class="room-btn active"
+                    onclick="selectRoom('general', this)"># general</button>
+            <button class="room-btn"
+                    onclick="selectRoom('tech', this)"># tech</button>
+            <button class="room-btn"
+                    onclick="selectRoom('nit-rourkela', this)"># nit-rourkela</button>
+            <button class="room-btn"
+                    onclick="selectRoom('random', this)"># random</button>
+          </div>
+        </div>
+        <button class="btn-join" onclick="joinChat()">
+          Join Chat →
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHAT SCREEN -->
+  <div class="chat-screen hidden" id="chatScreen">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <div class="app-name">💬 ChatApp</div>
+      </div>
+
+      <div class="rooms-section">
+        <div class="section-label">Rooms</div>
+        <div class="room-list">
+          <div class="room-item active" id="room-general"
+               onclick="switchRoom('general')"># general</div>
+          <div class="room-item" id="room-tech"
+               onclick="switchRoom('tech')"># tech</div>
+          <div class="room-item" id="room-nit-rourkela"
+               onclick="switchRoom('nit-rourkela')"># nit-rourkela</div>
+          <div class="room-item" id="room-random"
+               onclick="switchRoom('random')"># random</div>
+        </div>
+      </div>
+
+      <div class="users-section">
+        <div class="section-label">
+          Online — <span id="onlineCount">0</span>
+        </div>
+        <div class="users-list" id="usersList"></div>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="my-name" id="myName"></div>
+        <button class="btn-leave" onclick="leaveChat()">Leave</button>
+      </div>
+    </div>
+
+    <!-- MAIN CHAT -->
+    <div class="chat-main">
+
+      <!-- HEADER -->
+      <div class="chat-header">
+        <div class="chat-room-name" id="chatRoomName"># general</div>
+        <div class="chat-room-desc" id="chatRoomDesc">
+          General discussion
+        </div>
+      </div>
+
+      <!-- MESSAGES -->
+      <div class="messages" id="messages"></div>
+
+      <!-- TYPING -->
+      <div class="typing-indicator hidden" id="typingIndicator">
+        <span id="typingText"></span>
+        <span class="typing-dots">
+          <span></span><span></span><span></span>
+        </span>
+      </div>
+
+      <!-- INPUT -->
+      <div class="message-input-wrap">
+        <input type="text" id="messageInput"
+               placeholder="Message #general..."
+               maxlength="500"
+               onkeydown="handleKey(event)"
+               oninput="handleTyping()"/>
+        <button class="btn-send" onclick="sendMessage()">➤</button>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>
